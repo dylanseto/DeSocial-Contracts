@@ -8,7 +8,7 @@ def escrow_account(app_id):
     rekey_check = Txn.rekey_to() == Global.zero_address()
     linked_with_app_call = And(
         Gtxn[0].type_enum() == TxnType.ApplicationCall,
-        Gtxn[0].application_id() == Int(app_id)
+        Gtxn[0].application_id() == app_id
     )
     fee_check = Txn.fee() <= Int(1000)
 
@@ -35,4 +35,5 @@ def escrow_account(app_id):
 
 
 
-print(compileTeal(escrow_account(0), Mode.Signature))
+arg = int(sys.argv[1])
+print(compileTeal(escrow_account(Int(arg)), Mode.Signature))

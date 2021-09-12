@@ -1,5 +1,6 @@
 # compile teal code
 import base64
+import os
 
 from algosdk.v2client import algod
 from algosdk import mnemonic
@@ -67,14 +68,7 @@ try:
     }
 
     algod_client = algod.AlgodClient(algod_token, algod_address, headers);
-
-    # compile escrow
-    escrow_teal = "../contracts/build/escrow_account.teal"
-    escrow_teal_data = open(escrow_teal, 'r').read()
-    escrow_response = algod_client.compile(escrow_teal_data, headers={'X-API-Key': 'SxyeYnXjIi7sydMnmi85L8mqXypdroBv1ZdTcBmp', 'content-type': 'application/x-binary'})
-    
-    escrow_teal_address = escrow_response["hash"]
-    
+  
     # compile createPost
     createPost_teal = "../contracts/build/createPost.teal"
     createPost_teal_data = open(createPost_teal, 'r').read()
@@ -91,10 +85,6 @@ try:
     clear_address = clear_response["hash"]
     clear_program = base64.b64decode(create_post_response['result'])
     
-    f = open("../contracts/lib/contracts.js", "a")
-    f.write('export const escrow_teal_address = "' + escrow_teal_address + '"')
-    f.write('\nexport const createPost_teal_address = "' + createPost_address + '"')
-    f.close()
     
     # get account from mnemonic
     private_key = mnemonic.to_private_key("horse slow toward twelve win kiwi delay keen steak survey second syrup sponsor stumble favorite below physical indoor nominee area team desert current abstract weather")
@@ -115,7 +105,24 @@ try:
     global_schema = transaction.StateSchema(global_ints, global_bytes)
     local_schema = transaction.StateSchema(local_ints, local_bytes)
     
-    create_app(algod_client, private_key, createPost_program, clear_program, global_schema, local_schema)
+    createPostId = create_app(algod_client, private_key, createPost_program, clear_program, global_schema, local_schema)
+    
+    # compile pyteal for the escrow account   
+    cmd = "python ./src/contract/escrow_account.py " + str(createPostId) + " >> ./build/escrow_account.teal"
+    print(cmd)
+    os.system(cmd)
+    
+    # compile escrow
+    escrow_teal = "../contracts/build/escrow_account.teal"
+    escrow_teal_data = open(escrow_teal, 'r').read()
+    escrow_response = algod_client.compile(escrow_teal_data, headers={'X-API-Key': 'SxyeYnXjIi7sydMnmi85L8mqXypdroBv1ZdTcBmp', 'content-type': 'application/x-binary'})
+    
+    escrow_teal_address = escrow_response["hash"]
+    
+    f = open("../contracts/lib/contracts.js", "a")
+    f.write('export const escrow_teal_address = "' + escrow_teal_address + '"')
+    f.write('\nexport const createPost_teal_address = "' + createPost_address + '"')
+    f.close()
 
 except AlgodHTTPError as err:
     print(err)
