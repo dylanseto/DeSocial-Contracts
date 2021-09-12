@@ -1,4 +1,6 @@
 REM Clean Teal Scripts
+md "build" 2>NUL
+
 cd ./build
 del *.teal
 cd ..
