@@ -8,6 +8,8 @@ from algosdk import account
 from algosdk.future import transaction
 from algosdk.error import AlgodHTTPError
 
+import algo_config
+
 # Helper function that waits for a given txid to be confirmed by the network
 def wait_for_confirmation(client, txid):
     last_round = client.status().get('last-round')
@@ -61,13 +63,7 @@ def create_app(client, private_key,
         
 try:
     # create an algod client
-    algod_address = "https://testnet-algorand.api.purestake.io/ps2"
-    algod_token = "SxyeYnXjIi7sydMnmi85L8mqXypdroBv1ZdTcBmp"
-    headers = {
-        "X-API-Key": algod_token,
-    }
-
-    algod_client = algod.AlgodClient(algod_token, algod_address, headers);
+    algod_client = algod.AlgodClient(algo_config.algod_token, algo_config.algod_address, algo_config.headers);
   
     # compile createPost
     createPost_teal = "../contracts/build/createPost.teal"
@@ -87,7 +83,7 @@ try:
     
     
     # get account from mnemonic
-    private_key = mnemonic.to_private_key("horse slow toward twelve win kiwi delay keen steak survey second syrup sponsor stumble favorite below physical indoor nominee area team desert current abstract weather")
+    private_key = mnemonic.to_private_key(algo_config.m_mnemonic)
     sender = account.address_from_private_key(private_key)
     print("Sender: " + sender)
     
