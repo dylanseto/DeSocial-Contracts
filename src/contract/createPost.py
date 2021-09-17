@@ -32,7 +32,8 @@ def createPost():
     # The post must be frozen so that users cannot transfer it elsewhere
     on_freeze_post = Seq([
                     Assert(Global.group_size() == Int(3)),
-                    Assert(Gtxn[2].type_enum() == TxnType.AssetFreeze)
+                    Assert(Gtxn[0].type_enum() == TxnType.AssetFreeze),
+                    Int(1)
     ])
     
     program = Cond( 
@@ -40,8 +41,8 @@ def createPost():
         [Txn.application_id() == Int(0), Int(1)],
         [Txn.application_args[0] == Bytes("set_escrow"), on_set_escrow],
         [Txn.application_args[0] == Bytes("create_post"), on_create_post],
-        [Txn.application_args[0] == Bytes("get_post"), on_get_post],
-        [Txn.application_args[0] == Bytes("freeze_post"), on_freeze_post]
+        [Txn.application_args[0] == Bytes("get_post"), on_get_post]
+        #[Txn.application_args[0] == Bytes("freeze_post"), on_freeze_post]
     )
         
     return And(Txn.group_index() == Int(0), program)

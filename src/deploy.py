@@ -85,7 +85,7 @@ try:
     # get account from mnemonic
     private_key = mnemonic.to_private_key(algo_config.m_mnemonic)
     sender = account.address_from_private_key(private_key)
-    print("Sender: " + sender)
+    # print("Sender: " + sender)
     
     # get node suggested parameters
     params = algod_client.suggested_params()
