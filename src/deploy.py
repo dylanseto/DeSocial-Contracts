@@ -115,9 +115,12 @@ try:
     
     escrow_teal_address = escrow_response["hash"]
     
+    #Note: Uses CRLF line breaking to conform with ESLint
     f = open("../contracts/lib/contracts.js", "a")
-    f.write('export const escrow_teal_address = "' + escrow_teal_address + '"')
-    f.write('\nexport const createPost_teal_address = "' + createPost_address + '"')
+    f.write("export const escrowTealAddress = '" + escrow_teal_address + "'")
+    f.write("\r\nexport const createPostTealAddress = '" + createPost_address + "'")
+    f.write("\r\nexport const createPostAppID = " + createPostId)
+    f.write("\r\n\r\n"); # EOF +1 Extra Line
     f.close()
 
 except AlgodHTTPError as err:
