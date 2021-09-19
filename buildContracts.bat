@@ -14,6 +14,11 @@ REM Build Smart Contracts from Python to Teal - the escrow account script is com
 python ./src/contract/createPost.py >> ./build/createPost.teal
 python ./src/contract/clearProgram.py >> ./build/clearProgram.teal
 
-REM Compile & Deploy TEAL Smart Contracts
+REM Compile, Deploy and setup TEAL Smart Contracts
 python ./src/deploy.py
+python ./src/setup.py
+
+REM Format JS file with ESLint
+cd ./lib
+npx eslint .\contracts.js 
 pause

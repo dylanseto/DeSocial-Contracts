@@ -1,5 +1,7 @@
+import base64
+
 from algosdk.v2client import algod
-from algosdk import mnemonic
+from algosdk import mnemonic, constants, util
 from algosdk import account
 from algosdk.future import transaction
 from algosdk.error import AlgodHTTPError
@@ -32,10 +34,29 @@ try:
     # Declare on_complete as NoOp
     on_complete = transaction.OnComplete.NoOpOC
 
-    callAppTxn = transaction.ApplicationCallTxn(sender, params, 27149634, on_complete, app_args=["set_escrow", "ZHMY4GKYNL4IC3P4EONUNRNBE6RZRPDFEB3VYAIQNFRFDFDTLAOLO2APFM"])
+    #Get Logic Address of the escrow account
+    programstr = 'AiAHBtXflg3oBwABBAMxIDIDEkAAAQAzABAiEjMAGCMSEEAAAQAxASQOQAABADcAGgAXJRJAADU3ABoAFyEEEkAAAQAxECEFEkAAAQAxEzIDEkAAAQAxFTIDEkAAAQAxEiEEEkAAAQAhBEIABTEQIQYS'
+    t = programstr.encode()
+    program = base64.decodebytes(t) #hex encode string
+    lsig = transaction.LogicSig(program)
+    print("lsig Address: " + lsig.address())
+    lAddress = lsig.address()
+    
+
+    callAppTxn = transaction.ApplicationCallTxn(sender, params, 27149634, on_complete, app_args=["set_escrow", lAddress])
     
     signedTxn = callAppTxn.sign(private_key)
     algod_client.send_transaction(signedTxn)
+
+    ## Fund The Escrow account
+    fundEscrowTxn = transaction.PaymentTxn(
+                                    sender,
+                                    params,
+                                    lAddress,
+                                    util.algos_to_microalgos(10))
+    signedEscrowFundTxn = fundEscrowTxn.sign(private_key)
+    algod_client.send_transaction(signedEscrowFundTxn)
+
 except AlgodHTTPError as err:
     print(err)
     print(err.code)

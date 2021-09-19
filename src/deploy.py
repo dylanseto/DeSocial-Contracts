@@ -113,14 +113,14 @@ try:
     escrow_teal_data = open(escrow_teal, 'r').read()
     escrow_response = algod_client.compile(escrow_teal_data, headers={'X-API-Key': 'SxyeYnXjIi7sydMnmi85L8mqXypdroBv1ZdTcBmp', 'content-type': 'application/x-binary'})
     
-    escrow_teal_address = escrow_response["hash"]
+    escrowStr = escrow_response['result']
     
     #Note: Uses CRLF line breaking to conform with ESLint
     f = open("../contracts/lib/contracts.js", "a")
-    f.write("export const escrowTealAddress = '" + escrow_teal_address + "'")
-    f.write("\r\nexport const createPostTealAddress = '" + createPost_address + "'")
-    f.write("\r\nexport const createPostAppID = " + createPostId)
-    f.write("\r\n\r\n"); # EOF +1 Extra Line
+    f.write("export const escrowTealAddress = '" + escrowStr + "'")
+    f.write("\nexport const createPostTealAddress = '" + createPost_address + "'")
+    f.write("\nexport const createPostAppID = " + str(createPostId))
+    f.write("\n"); # EOL +1 Extra Line
     f.close()
 
 except AlgodHTTPError as err:
