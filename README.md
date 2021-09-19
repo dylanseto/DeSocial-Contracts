@@ -19,8 +19,7 @@ headers = {
 }
 m_mnemonic = "employ fly ahead odor finger olympic virtual suffer sugar fold hand shop latin fortune elephant valve timber notable oblige screen pioneer tiger snake abandon visit"
 ```
-4) Run buildContracts.bat to compile and deploy the contracts on the Algorand network specified
-buildContracts.bat
+4) Run buildContracts.bat to compile and deploy the contracts on the Algorand network specified in algo_config.py.
 ```
-installPackages.bat
+buildContracts.bat
 ```
