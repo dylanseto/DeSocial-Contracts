@@ -123,6 +123,11 @@ try:
     f.write("\n"); # EOL +1 Extra Line
     f.close()
 
+    f = open("../contracts/src/contract_config.py", "a")
+    f.write("\ncreatePostAppID = " + str(createPostId))
+    f.write("\n"); # EOL +1 Extra Line
+    f.close()
+
 except AlgodHTTPError as err:
     print(err)
     print(err.code)

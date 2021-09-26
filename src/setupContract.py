@@ -7,6 +7,7 @@ from algosdk.future import transaction
 from algosdk.error import AlgodHTTPError
 
 import algo_config
+import contract_config
 
 # Helper function that waits for a given txid to be confirmed by the network
 def wait_for_confirmation(client, txid):
@@ -43,12 +44,13 @@ try:
     lAddress = lsig.address()
     
 
-    callAppTxn = transaction.ApplicationCallTxn(sender, params, 27149634, on_complete, app_args=["set_escrow", lAddress])
+    callAppTxn = transaction.ApplicationCallTxn(sender, params, contract_config.createPostAppID, on_complete, app_args=["set_escrow", lAddress])
     
     signedTxn = callAppTxn.sign(private_key)
     algod_client.send_transaction(signedTxn)
 
     ## Fund The Escrow account
+    '''
     fundEscrowTxn = transaction.PaymentTxn(
                                     sender,
                                     params,
@@ -56,6 +58,7 @@ try:
                                     util.algos_to_microalgos(10))
     signedEscrowFundTxn = fundEscrowTxn.sign(private_key)
     algod_client.send_transaction(signedEscrowFundTxn)
+    '''
 
 except AlgodHTTPError as err:
     print(err)

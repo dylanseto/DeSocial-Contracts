@@ -16,9 +16,9 @@ python ./src/contract/clearProgram.py >> ./build/clearProgram.teal
 
 REM Compile, Deploy and setup TEAL Smart Contracts
 python ./src/deploy.py
-python ./src/setup.py
+python ./src/setupContract.py
 
 REM Format JS file with ESLint
 cd ./lib
-npx eslint .\contracts.js 
+npx eslint .\contracts.js --fix
 pause

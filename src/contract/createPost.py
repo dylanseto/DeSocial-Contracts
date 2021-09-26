@@ -10,14 +10,14 @@ def createPost():
     ])
 
     on_create_post = Seq([
-                    Assert(Global.group_size() == Int(3)), # Check that this is a group transaction.
-                    Assert(Gtxn[0].receiver() == App.globalGet(Bytes('escrow'))), # Check that the receiver is the escrow account.
-                    Assert(Gtxn[0].type_enum() == TxnType.AssetConfig),
-                    Assert(Eq(Gtxn[0].config_asset_name(), Bytes("asa_post"))), # Check Asset name.
-                    #Assert(Gtxn[0].config_asset_default_frozen() == Int(1)), # Check frozen
-                    Assert(Gtxn[0].freeze_asset_account() == App.globalGet(Bytes('escrow'))), # Freeze account
-                    Assert(Gtxn[0].config_asset_total() == Int(1)), # That supply == 1 (NFT)
-                    Assert(Len(Gtxn[0].config_asset_metadata_hash()) > Int(0)), # Metadata is not empty
+                    Assert(Global.group_size() == Int(2)), # Check that this is a group transaction.
+                    Assert(Gtxn[1].receiver() == App.globalGet(Bytes('escrow'))), # Check that the receiver is the escrow account.
+                    Assert(Gtxn[1].type_enum() == TxnType.AssetConfig),
+                    Assert(Eq(Gtxn[1].config_asset_name(), Bytes("asa_post"))), # Check Asset name.
+                    #Assert(Gtxn[1].config_asset_default_frozen() == Int(1)), # Check frozen
+                    Assert(Gtxn[1].freeze_asset_account() == App.globalGet(Bytes('escrow'))), # Freeze account
+                    Assert(Gtxn[1].config_asset_total() == Int(1)), # That supply == 1 (NFT)
+                    Assert(Len(Gtxn[1].config_asset_metadata_hash()) > Int(0)), # Metadata is not empty
                     #TODO: Check for malformation of IPFS CID
                     Int(1)
     ])
@@ -32,7 +32,7 @@ def createPost():
     # The post must be frozen so that users cannot transfer it elsewhere
     on_freeze_post = Seq([
                     Assert(Global.group_size() == Int(3)),
-                    Assert(Gtxn[0].type_enum() == TxnType.AssetFreeze),
+                    Assert(Gtxn[2].type_enum() == TxnType.AssetFreeze),
                     Int(1)
     ])
     

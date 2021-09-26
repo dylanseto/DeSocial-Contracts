@@ -8,12 +8,12 @@ def escrow_account(app_id):
     rekey_check = Txn.rekey_to() == Global.zero_address()
     linked_with_app_call = And(
         Gtxn[0].type_enum() == TxnType.ApplicationCall,
-        Gtxn[0].application_id() == app_id
+        Gtxn[0].application_id() == Int(app_id)
     )
     fee_check = Txn.fee() <= Int(1000)
 
     # create asa from escrow
-    on_create_asa = Txn.type_enum() == TxnType.AssetConfig
+    on_create_asa = Gtxn[1].type_enum() == TxnType.AssetConfig
 
     # fund 1 asa that has been created by escrow
     on_fund_asa = Seq([
@@ -24,16 +24,20 @@ def escrow_account(app_id):
         Int(1)
     ])
 
+    on_fund_escrow = Seq([
+                    Assert(Txn.type_enum() == TxnType.Payment)
+    ])
+
     return Seq([
                 Assert(rekey_check),
                 Assert(linked_with_app_call),
                 Assert(fee_check),
                 Cond(
-                [Btoi(Gtxn[0].application_args[0]) == Int(0), on_create_asa],
-                [Btoi(Gtxn[0].application_args[0]) == Int(1), on_fund_asa])
+                [Gtxn[0].application_args[0] == Bytes("create_post"), on_create_asa],
+                [Gtxn[0].application_args[0] == Bytes("get_post"), on_fund_asa])
             ])
 
 
 
 arg = int(sys.argv[1])
-print(compileTeal(escrow_account(Int(arg)), Mode.Signature))
+print(compileTeal(escrow_account(arg), Mode.Signature, version=3))

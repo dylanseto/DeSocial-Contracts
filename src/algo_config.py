@@ -3,4 +3,4 @@ algod_token = "SxyeYnXjIi7sydMnmi85L8mqXypdroBv1ZdTcBmp"
 headers = {
     "X-API-Key": algod_token,
 }
-m_mnemonic = "employ fly ahead odor finger olympic virtual suffer sugar fold hand shop latin fortune elephant valve timber notable oblige screen pioneer tiger snake abandon visit"
+m_mnemonic = "hub wheel guitar load scissors code abandon bring able loyal churn learn path person release buddy glory guitar jacket youth voyage few close absent logic"
