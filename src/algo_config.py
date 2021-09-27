@@ -3,4 +3,4 @@ algod_token = "SxyeYnXjIi7sydMnmi85L8mqXypdroBv1ZdTcBmp"
 headers = {
     "X-API-Key": algod_token,
 }
-m_mnemonic = "hub wheel guitar load scissors code abandon bring able loyal churn learn path person release buddy glory guitar jacket youth voyage few close absent logic"
+m_mnemonic = "inherit ostrich unusual paddle live denial call mom cook adjust supreme output hen win best bar stand nephew shrug mom april beyond coyote absorb addict"

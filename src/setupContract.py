@@ -1,7 +1,7 @@
 import base64
 
 from algosdk.v2client import algod
-from algosdk import mnemonic, constants, util
+from algosdk import mnemonic, constants, util, encoding
 from algosdk import account
 from algosdk.future import transaction
 from algosdk.error import AlgodHTTPError
@@ -36,16 +36,20 @@ try:
     on_complete = transaction.OnComplete.NoOpOC
 
     #Get Logic Address of the escrow account
-    programstr = 'AiAHBtXflg3oBwABBAMxIDIDEkAAAQAzABAiEjMAGCMSEEAAAQAxASQOQAABADcAGgAXJRJAADU3ABoAFyEEEkAAAQAxECEFEkAAAQAxEzIDEkAAAQAxFTIDEkAAAQAxEiEEEkAAAQAhBEIABTEQIQYS'
-    t = programstr.encode()
+    # programstr = 'AyAGBpSR7w3oBwQBAyYCC2NyZWF0ZV9wb3N0CGdldF9wb3N0MSAyAxJEMwAQIhIzABgjEhBEMQEkDkQ3ABoAKBJAACY3ABoAKRJAAAEAMRAlEkQxEzIDEkQxFTIDEkQxEiEEEkQhBEIABjMBECEFEg=='
+    t = contract_config.escrowTealAddress.encode()
     program = base64.decodebytes(t) #hex encode string
     lsig = transaction.LogicSig(program)
     print("lsig Address: " + lsig.address())
     lAddress = lsig.address()
+    lAddressDecoded = encoding.decode_address(lAddress)
+    print("decoded: "+ str(lAddressDecoded))
     
 
-    callAppTxn = transaction.ApplicationCallTxn(sender, params, contract_config.createPostAppID, on_complete, app_args=["set_escrow", lAddress])
+    callAppTxn = transaction.ApplicationCallTxn(sender, params, contract_config.createPostAppID, on_complete, app_args=["set_escrow", lAddressDecoded])
     
+    # print("tran: " + str(callAppTxn))
+
     signedTxn = callAppTxn.sign(private_key)
     algod_client.send_transaction(signedTxn)
 

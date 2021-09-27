@@ -10,6 +10,10 @@ cd ./lib
 del *.js
 cd ..
 
+cd ./src
+del contract_config.py
+cd ..
+
 REM Build Smart Contracts from Python to Teal - the escrow account script is compile later in deploy.py
 python ./src/contract/createPost.py >> ./build/createPost.teal
 python ./src/contract/clearProgram.py >> ./build/clearProgram.teal

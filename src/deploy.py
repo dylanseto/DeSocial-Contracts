@@ -124,6 +124,7 @@ try:
     f.close()
 
     f = open("../contracts/src/contract_config.py", "a")
+    f.write("escrowTealAddress = '" + escrowStr + "'")
     f.write("\ncreatePostAppID = " + str(createPostId))
     f.write("\n"); # EOL +1 Extra Line
     f.close()
