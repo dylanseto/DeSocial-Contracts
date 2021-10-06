@@ -47,4 +47,4 @@ def createPost():
     return And(Txn.group_index() == Int(0), program)
 
 if __name__ == "__main__":
-    print(compileTeal(createPost(), Mode.Application, version=3))
+    print(compileTeal(createPost(), Mode.Application, version=5))

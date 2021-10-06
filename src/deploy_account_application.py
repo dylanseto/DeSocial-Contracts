@@ -102,29 +102,10 @@ try:
     local_schema = transaction.StateSchema(local_ints, local_bytes)
     
     createAccountId = create_app(algod_client, private_key, createAccount_program, clear_program, global_schema, local_schema)
-    
-    # compile pyteal for the escrow account   
-    cmd = "python ./src/contract/escrow_account.py " + str(createAccountId) + " >> ./build/escrow_account.teal"
-    print(cmd)
-    os.system(cmd)
-    
-    # compile escrow
-    escrow_teal = "../contracts/build/escrow_account.teal"
-    escrow_teal_data = open(escrow_teal, 'r').read()
-    escrow_response = algod_client.compile(escrow_teal_data, headers={'X-API-Key': 'SxyeYnXjIi7sydMnmi85L8mqXypdroBv1ZdTcBmp', 'content-type': 'application/x-binary'})
-    
-    escrowStr = escrow_response['result']
-    
-    f = open("../contracts/lib/account_contracts_account.js", "a")
-    f.write("export const escrowTealAddress = '" + escrowStr + "'")
+   
+    f = open("../contracts/lib/contracts_account_config.js", "a")
     f.write("\nexport const createPostTealAddress = '" + createAccount_address + "'")
     f.write("\nexport const createPostAppID = " + str(createAccountId))
-    f.write("\n"); # EOL +1 Extra Line
-    f.close()
-
-    f = open("../contracts/src/contract_account_config.py", "a")
-    f.write("escrowTealAddress = '" + escrowStr + "'")
-    f.write("\ncreatePostAppID = " + str(createAccountId))
     f.write("\n"); # EOL +1 Extra Line
     f.close()
 

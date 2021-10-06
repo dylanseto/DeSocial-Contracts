@@ -40,4 +40,4 @@ def escrow_account(app_id):
 
 
 arg = int(sys.argv[1])
-print(compileTeal(escrow_account(arg), Mode.Signature, version=3))
+print(compileTeal(escrow_account(arg), Mode.Signature, version=5))

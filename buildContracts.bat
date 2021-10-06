@@ -26,5 +26,6 @@ python ./src/setupContract.py
 
 REM Format JS file with ESLint
 cd ./lib
-npx eslint .\contracts.js --fix
+npx eslint .\contracts_post_config.js --fix
+npx eslint .\contracts_account_config.js --fix
 pause
