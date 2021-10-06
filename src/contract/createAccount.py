@@ -20,7 +20,7 @@ def createAccount():
                     Int(1)
     ])
 
-    on_get_post =  Seq([
+    on_get_account =  Seq([
                     Assert(Global.group_size() == Int(2)),
                     Assert(Gtxn[1].sender() == App.globalGet(Bytes('escrow'))),
                     Assert(Gtxn[1].type_enum() == TxnType.AssetTransfer),
@@ -37,8 +37,8 @@ def createAccount():
     program = Cond( 
         [Txn.application_id() == Int(0), Int(1)],  # On app creation
         [Txn.application_args[0] == Bytes("set_escrow"), on_set_escrow],
-        [Txn.application_args[0] == Bytes("create_account"), on_create_post],
-        [Txn.application_args[0] == Bytes("get_account"), on_get_post]
+        [Txn.application_args[0] == Bytes("create_account"), on_create_account],
+        [Txn.application_args[0] == Bytes("get_account"), on_get_account]
         #[Txn.application_args[0] == Bytes("freeze_post"), on_freeze_post]
     )
         
