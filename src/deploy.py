@@ -63,7 +63,7 @@ def create_app(client, private_key,
         
 try:
     # create an algod client
-    algod_client = algod.AlgodClient(algo_config.algod_token, algo_config.algod_address, algo_config.headers);
+    algod_client = algod.AlgodClient(algo_config.algod_token, algo_config.algod_address, algo_config.headers)
   
     # compile createPost
     createPost_teal = "../contracts/build/createPost.teal"
@@ -105,7 +105,7 @@ try:
     
     # compile pyteal for the escrow account   
     cmd = "python ./src/contract/escrow_account.py " + str(createPostId) + " >> ./build/escrow_account.teal"
-    subprocess.call(cmd, shell=false)
+    subprocess.call(cmd, shell=False)
     
     # compile escrow
     escrow_teal = "../contracts/build/escrow_account.teal"
@@ -114,12 +114,11 @@ try:
     
     escrowStr = escrow_response['result']
     
-    #Note: Uses CRLF line breaking to conform with ESLint
     f = open("../contracts/lib/contracts_post_config.js", "a")
-    f.write("export const escrowTealAddress = '" + escrowStr + "'")
-    f.write("\nexport const createPostTealAddress = '" + createPost_address + "'")
-    f.write("\nexport const createPostAppID = " + str(createPostId))
-    f.write("\n"); # EOL +1 Extra Line
+    f.write("export const escrowTealAddress = '" + escrowStr + "';")
+    f.write("\nexport const createPostTealAddress = '" + createPost_address + "';")
+    f.write("\nexport const createPostAppID = " + str(createPostId) + ";")
+    f.write("\n") # EOL +1 Extra Line
     f.close()
 
     f = open("../contracts/src/contract_config.py", "a")

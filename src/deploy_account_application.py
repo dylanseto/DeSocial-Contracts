@@ -63,7 +63,7 @@ def create_app(client, private_key,
         
 try:
     # create an algod client
-    algod_client = algod.AlgodClient(algo_config.algod_token, algo_config.algod_address, algo_config.headers);
+    algod_client = algod.AlgodClient(algo_config.algod_token, algo_config.algod_address, algo_config.headers)
   
     # compile createPost
     createAccount_teal = "../contracts/build/createAccount.teal"
@@ -94,8 +94,8 @@ try:
     on_complete = transaction.OnComplete.NoOpOC
     
     # Declare application state storage (immutable)
-    local_ints = 0
-    local_bytes = 1
+    local_ints = 10
+    local_bytes = 10
     global_ints = 0
     global_bytes = 1
     global_schema = transaction.StateSchema(global_ints, global_bytes)
@@ -106,6 +106,11 @@ try:
     f = open("../contracts/lib/contracts_account_config.js", "a")
     f.write("\nexport const createAccountTealAddress = '" + createAccount_address + "';")
     f.write("\nexport const createAccountAppID = " + str(createAccountId) + ";")
+    f.write("\n") # EOL +1 Extra Line
+    f.close()
+
+    f = open("../contracts/src/account_contract_config.py", "a")
+    f.write("\ncreateAccountAppID = " + str(createAccountId))
     f.write("\n"); # EOL +1 Extra Line
     f.close()
 

@@ -1,13 +1,14 @@
 import base64
 
 from algosdk.v2client import algod
-from algosdk import mnemonic, constants, util, encoding
+from algosdk import mnemonic, constants, util, encoding, logic
 from algosdk import account
 from algosdk.future import transaction
 from algosdk.error import AlgodHTTPError
 
 import algo_config
 import contract_config
+import account_contract_config
 
 # Helper function that waits for a given txid to be confirmed by the network
 def wait_for_confirmation(client, txid):
@@ -36,7 +37,6 @@ try:
     on_complete = transaction.OnComplete.NoOpOC
 
     #Get Logic Address of the escrow account
-    # programstr = 'AyAGBpSR7w3oBwQBAyYCC2NyZWF0ZV9wb3N0CGdldF9wb3N0MSAyAxJEMwAQIhIzABgjEhBEMQEkDkQ3ABoAKBJAACY3ABoAKRJAAAEAMRAlEkQxEzIDEkQxFTIDEkQxEiEEEkQhBEIABjMBECEFEg=='
     t = contract_config.escrowTealAddress.encode()
     program = base64.decodebytes(t) #hex encode string
     lsig = transaction.LogicSig(program)
@@ -47,22 +47,20 @@ try:
     
 
     callAppTxn = transaction.ApplicationCallTxn(sender, params, contract_config.createPostAppID, on_complete, app_args=["set_escrow", lAddressDecoded])
-    
+
     # print("tran: " + str(callAppTxn))
 
     signedTxn = callAppTxn.sign(private_key)
     algod_client.send_transaction(signedTxn)
 
-    ## Fund The Escrow account
-    '''
+    ## Fund The Escrow account of the account
     fundEscrowTxn = transaction.PaymentTxn(
                                     sender,
                                     params,
-                                    lAddress,
-                                    util.algos_to_microalgos(10))
+                                    logic.get_application_address(account_contract_config.createAccountAppID),
+                                    util.algos_to_microalgos(2))
     signedEscrowFundTxn = fundEscrowTxn.sign(private_key)
     algod_client.send_transaction(signedEscrowFundTxn)
-    '''
 
 except AlgodHTTPError as err:
     print(err)
