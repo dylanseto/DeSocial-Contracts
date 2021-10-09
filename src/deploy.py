@@ -75,7 +75,7 @@ try:
     
     # compile clearProgram
     clear_teal = "../contracts/build/clearProgram.teal"
-    clear_teal_data = open(createPost_teal, 'r').read()
+    clear_teal_data = open(clear_teal, 'r').read()
     clear_response = algod_client.compile(clear_teal_data, headers={'X-API-Key': 'SxyeYnXjIi7sydMnmi85L8mqXypdroBv1ZdTcBmp', 'content-type': 'application/x-binary'})
     
     clear_address = clear_response["hash"]
@@ -116,7 +116,7 @@ try:
     escrowStr = escrow_response['result']
     
     #Note: Uses CRLF line breaking to conform with ESLint
-    f = open("../contracts/lib/contracts.js", "a")
+    f = open("../contracts/lib/contracts_post_config.js", "a")
     f.write("export const escrowTealAddress = '" + escrowStr + "'")
     f.write("\nexport const createPostTealAddress = '" + createPost_address + "'")
     f.write("\nexport const createPostAppID = " + str(createPostId))

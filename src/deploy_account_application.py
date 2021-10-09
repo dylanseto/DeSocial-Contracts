@@ -75,7 +75,7 @@ try:
     
     # compile clearProgram
     clear_teal = "../contracts/build/clearProgram.teal"
-    clear_teal_data = open(createAccount_teal, 'r').read()
+    clear_teal_data = open(clear_teal, 'r').read()
     clear_response = algod_client.compile(clear_teal_data, headers={'X-API-Key': 'SxyeYnXjIi7sydMnmi85L8mqXypdroBv1ZdTcBmp', 'content-type': 'application/x-binary'})
     
     clear_address = clear_response["hash"]
@@ -104,8 +104,8 @@ try:
     createAccountId = create_app(algod_client, private_key, createAccount_program, clear_program, global_schema, local_schema)
    
     f = open("../contracts/lib/contracts_account_config.js", "a")
-    f.write("\nexport const createPostTealAddress = '" + createAccount_address + "'")
-    f.write("\nexport const createPostAppID = " + str(createAccountId))
+    f.write("\nexport const createAccountTealAddress = '" + createAccount_address + "';")
+    f.write("\nexport const createAccountAppID = " + str(createAccountId) + ";")
     f.write("\n"); # EOL +1 Extra Line
     f.close()
 

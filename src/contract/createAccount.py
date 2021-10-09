@@ -2,23 +2,14 @@ from pyteal import *
 
 
 def createAccount():
-    # set escrow address
-    on_set_escrow = Seq([
-        Assert(Txn.sender() == Global.creator_address()),
-        App.globalPut(Bytes('escrow'), Txn.application_args[1]),
-        Int(1)
-    ])
-
     on_create_account = Seq(
-        Assert(App.localGet(Int(0), Bytes("signed_up")) == Int(0)),
-        #Assert(Neq(Txn.application_args[1],Bytes(''))),
         # Create Account
         InnerTxnBuilder.Begin(),
         InnerTxnBuilder.SetFields(
             {
             TxnField.type_enum: TxnType.AssetConfig,
-            TxnField.config_asset_name: Bytes("asa_account"),
-            TxnField.config_asset_unit_name: Bytes("asa_account"),
+            TxnField.config_asset_name: Bytes("asa_acc"),
+            TxnField.config_asset_unit_name: Bytes("asa_acc"),
             TxnField.config_asset_total: Int(1),
             TxnField.config_asset_decimals: Int(0),
             TxnField.config_asset_url: Txn.application_args[1],
@@ -31,18 +22,6 @@ def createAccount():
         InnerTxnBuilder.Submit(),
 
         # Send Account NFT to user.
-        InnerTxnBuilder.Begin(),
-        InnerTxnBuilder.SetFields(
-            {
-                TxnField.type_enum: TxnType.AssetTransfer,
-                TxnField.xfer_asset: InnerTxn.created_asset_id(),
-                TxnField.receiver: Global.current_application_address(),
-                TxnField.amount: Int(1),
-
-            }
-        ),
-        InnerTxnBuilder.Submit(),
-        App.localPut(Int(0), Bytes("signed_up"), Int(1)),
         Int(1)
     )
 
