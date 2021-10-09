@@ -1,6 +1,6 @@
 # compile teal code
 import base64
-import os
+import subprocess
 
 from algosdk.v2client import algod
 from algosdk import mnemonic
@@ -105,8 +105,7 @@ try:
     
     # compile pyteal for the escrow account   
     cmd = "python ./src/contract/escrow_account.py " + str(createPostId) + " >> ./build/escrow_account.teal"
-    print(cmd)
-    os.system(cmd)
+    subprocess.call(cmd, shell=false)
     
     # compile escrow
     escrow_teal = "../contracts/build/escrow_account.teal"
