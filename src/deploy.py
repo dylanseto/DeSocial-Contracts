@@ -105,7 +105,7 @@ try:
     
     # compile pyteal for the escrow account   
     cmd = "python ./src/contract/escrow_account.py " + str(createPostId) + " >> ./build/escrow_account.teal"
-    subprocess.call(cmd, shell=False)
+    subprocess.call(cmd, shell=True)
     
     # compile escrow
     escrow_teal = "../contracts/build/escrow_account.teal"

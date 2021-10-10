@@ -40,7 +40,9 @@ def createPost():
         [Txn.application_id() == Int(0), Int(1)],  # On app creation
         [Txn.application_args[0] == Bytes("set_escrow"), on_set_escrow],
         [Txn.application_args[0] == Bytes("create_post"), on_create_post],
-        [Txn.application_args[0] == Bytes("get_post"), on_get_post]
+        [Txn.application_args[0] == Bytes("get_post"), on_get_post],
+        # For Debugging Purpose, allows me to delete the application, remove in prod.
+        [Txn.application_args[0] == Bytes("delete_app"), Int(1)]
         #[Txn.application_args[0] == Bytes("freeze_post"), on_freeze_post]
     )
         

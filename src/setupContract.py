@@ -7,7 +7,7 @@ from algosdk.future import transaction
 from algosdk.error import AlgodHTTPError
 
 import algo_config
-import contract_config
+# import contract_config
 import account_contract_config
 
 # Helper function that waits for a given txid to be confirmed by the network
@@ -35,23 +35,14 @@ try:
     
     # Declare on_complete as NoOp
     on_complete = transaction.OnComplete.NoOpOC
-
-    #Get Logic Address of the escrow account
-    t = contract_config.escrowTealAddress.encode()
-    program = base64.decodebytes(t) #hex encode string
-    lsig = transaction.LogicSig(program)
-    print("lsig Address: " + lsig.address())
-    lAddress = lsig.address()
-    lAddressDecoded = encoding.decode_address(lAddress)
-    print("decoded: "+ str(lAddressDecoded))
     
 
-    callAppTxn = transaction.ApplicationCallTxn(sender, params, contract_config.createPostAppID, on_complete, app_args=["set_escrow", lAddressDecoded])
+    # callAppTxn = transaction.ApplicationCallTxn(sender, params, contract_config.createPostAppID, on_complete, app_args=["set_escrow", lAddressDecoded])
 
     # print("tran: " + str(callAppTxn))
 
-    signedTxn = callAppTxn.sign(private_key)
-    algod_client.send_transaction(signedTxn)
+    # signedTxn = callAppTxn.sign(private_key)
+    # algod_client.send_transaction(signedTxn)
 
     ## Fund The Escrow account of the account
     fundEscrowTxn = transaction.PaymentTxn(

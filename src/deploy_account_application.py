@@ -94,10 +94,10 @@ try:
     on_complete = transaction.OnComplete.NoOpOC
     
     # Declare application state storage (immutable)
-    local_ints = 10
-    local_bytes = 10
-    global_ints = 0
-    global_bytes = 1
+    local_ints = 2
+    local_bytes = 2
+    global_ints = 2
+    global_bytes = 2
     global_schema = transaction.StateSchema(global_ints, global_bytes)
     local_schema = transaction.StateSchema(local_ints, local_bytes)
     
